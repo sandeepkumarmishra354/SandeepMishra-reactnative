@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, DeviceEventEmitter } from "react-native";
 import Button from "../../component/Button";
 import MyTextInput from "../../component/MyTextInput";
 import Subtitle from "../../component/Subtitle";
+import { useAppNavigation } from "../../navigation/hooks";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { productAction } from "../../redux/slice/product";
+import { EVENT_PRODUCT_CREATED, productAction } from "../../redux/slice/product";
 import { ICategory } from "../../redux/types/category";
 import { IProductCreate } from "../../redux/types/products";
 import Categories from "../home/Categories";
@@ -12,6 +13,7 @@ import Categories from "../home/Categories";
 type NewProductKeys = keyof IProductCreate;
 
 const ScreenProductCreate = () => {
+    const navigation = useAppNavigation();
     const actionDispatcher = useAppDispatch();
 
     const { creating, categories, categoryFetching } = useAppSelector(state => ({
@@ -25,6 +27,17 @@ const ScreenProductCreate = () => {
         // this is fixed here without it I'm not able to create new product.
         developerEmail: "sandeepkumarmishra354@gmail.com"
     });
+
+    // register for event "product created"
+    // don't forget to unsubscribe while going back.
+    React.useEffect(() => {
+        DeviceEventEmitter.addListener(EVENT_PRODUCT_CREATED, () => {
+            navigation.goBack();
+        });
+        return () => {
+            DeviceEventEmitter.removeAllListeners(EVENT_PRODUCT_CREATED);
+        }
+    }, []);
 
     const onCategoryChange = React.useCallback((category: ICategory) => {
         setSelectedCategory(category);
@@ -84,7 +97,7 @@ const ScreenProductCreate = () => {
                 placeholder="paste image url here."
                 value={newProduct.avatar}
                 onChangeText={onTextChange("avatar")} />
-            <Subtitle style={{marginBottom: 12}}>
+            <Subtitle style={{ marginBottom: 12 }}>
                 {`Selected Category: ${selectedCategory?.name ?? ""}`}
             </Subtitle>
             <Categories

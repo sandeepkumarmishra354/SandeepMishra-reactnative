@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { DeviceEventEmitter, ToastAndroid } from "react-native";
 import { ProductState } from "../types/products";
 import { fetchProductDetail, fetchProductList, createProduct } from "../thunk/product";
-import { ToastAndroid } from "react-native";
+
+export const EVENT_PRODUCT_CREATED = "ev-product-created";
 
 const initialState: ProductState = {
     products: [],
@@ -56,6 +58,8 @@ const productReducer = createSlice({
             state.creating = false;
             state.products.unshift(action.payload);
             ToastAndroid.show(`New product ${action.payload.name} added successfully.`, ToastAndroid.SHORT);
+            // emit this event so that product create page can listen and go to home page.
+            DeviceEventEmitter.emit(EVENT_PRODUCT_CREATED);
         });
         builder.addCase(createProduct.rejected, (state, action) => {
             state.creating = false;
