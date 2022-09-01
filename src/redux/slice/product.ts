@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProductState } from "../types/products";
-import { fetchProductDetail, fetchProductList } from "../thunk/product";
+import { fetchProductDetail, fetchProductList, createProduct } from "../thunk/product";
 import { ToastAndroid } from "react-native";
 
 const initialState: ProductState = {
     products: [],
     product: null,
     fetchingList: false,
-    fetchingDetail: false
+    fetchingDetail: false,
+    creating: false
 };
 
 const productReducer = createSlice({
@@ -47,13 +48,28 @@ const productReducer = createSlice({
             const message = action.payload as string;
             ToastAndroid.show(message, ToastAndroid.SHORT);
         });
+
+        builder.addCase(createProduct.pending, (state) => {
+            state.creating = true;
+        });
+        builder.addCase(createProduct.fulfilled, (state, action) => {
+            state.creating = false;
+            state.products.unshift(action.payload);
+            ToastAndroid.show(`New product ${action.payload.name} added successfully.`, ToastAndroid.SHORT);
+        });
+        builder.addCase(createProduct.rejected, (state, action) => {
+            state.creating = false;
+            const message = action.payload as string;
+            ToastAndroid.show(message, ToastAndroid.SHORT);
+        });
     }
 });
 
 export const productAction = {
     ...productReducer.actions,
     fetchProductDetail,
-    fetchProductList
+    fetchProductList,
+    createProduct
 };
 
 export default productReducer.reducer;

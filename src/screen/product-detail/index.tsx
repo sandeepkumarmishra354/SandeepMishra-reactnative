@@ -19,6 +19,7 @@ const ScreenProductDetail = () => {
         product: state.product.product,
     }));
 
+    // set page title as product name
     if (product)
         navigation.setOptions({
             title: product.name
@@ -31,6 +32,14 @@ const ScreenProductDetail = () => {
         }
     }, []);
 
+    const onWishlistPress = React.useCallback(() => {
+        // logic to add item into user's wishlist.
+    }, []);
+
+    const onCartPress = React.useCallback(() => {
+        // logic to add item into cart.
+    }, []);
+
     return (
         <View style={styles.main}>
             {
@@ -40,7 +49,7 @@ const ScreenProductDetail = () => {
                         <ActivityIndicator color="#1B98F5" size={26} />
                     </View>
                     :
-                    product && <View style={{flex:1}}>
+                    product && <View style={{ flex: 1 }}>
                         <ScrollView
                             style={styles.scrollview}
                             contentContainerStyle={{ padding: 12 }}>
@@ -67,7 +76,9 @@ const ScreenProductDetail = () => {
                                 {product.description}
                             </Subtitle>
                         </ScrollView>
-                        <ActionContainer/>
+                        <ActionContainer
+                            onWishlistPress={onWishlistPress}
+                            onCartPress={onCartPress} />
                     </View>
             }
         </View>

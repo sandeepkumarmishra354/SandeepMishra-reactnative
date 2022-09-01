@@ -8,6 +8,7 @@ import { productAction } from "../../redux/slice/product";
 import { ICategory } from "../../redux/types/category";
 import { IProduct } from "../../redux/types/products";
 import Categories from "./Categories";
+import FloatingButton from "../../component/FloatingButton";
 import Header from "./Header";
 import ProductList from "./ProductList";
 
@@ -48,6 +49,10 @@ const ScreenHome = () => {
         });
     }, []);
 
+    const onAddPress = React.useCallback(() => {
+        navigation.navigate(AppScreenName.PRODUCT_CREATE);
+    }, []);
+
     const onCategoryPress = React.useCallback((category: ICategory) => {
         setSelectedCategory(category);
     }, []);
@@ -69,6 +74,10 @@ const ScreenHome = () => {
                 loading={product.fetching}
                 data={productList}
                 onItemPress={onProductPress} />
+            {!product.fetching && <FloatingButton
+                icon="add-outline"
+                label="CREATE"
+                onPress={onAddPress} />}
         </View>
     );
 }

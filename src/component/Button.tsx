@@ -1,10 +1,8 @@
 import React from "react";
 import {
-    View, StyleSheet, Pressable, Text, StyleProp,
-    ViewStyle, TextStyle, ActivityIndicator
+    View, StyleSheet, Text, StyleProp,
+    ViewStyle, TextStyle, ActivityIndicator, TouchableNativeFeedback
 } from "react-native";
-
-const RIPPLE = { color: "#00000050", borderless: true, radius: 5 };
 
 interface Props {
     label: string,
@@ -19,9 +17,8 @@ interface Props {
 
 const Button = (props: Props) => {
     return (
-        <Pressable
-            onPress={props.disable ? undefined : props.onPress}
-            android_ripple={RIPPLE}>
+        <TouchableNativeFeedback
+            onPress={props.disable ? undefined : props.onPress}>
             <View style={[styles.view, props.containerStyle]}>
                 {
                     props.loading
@@ -35,7 +32,7 @@ const Button = (props: Props) => {
                         </Text>
                 }
             </View>
-        </Pressable>
+        </TouchableNativeFeedback>
     );
 }
 

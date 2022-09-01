@@ -21,9 +21,11 @@ const AppRootNavigation = () => {
                 options={{ headerShown: false }} />
             <Stack.Screen
                 name={AppScreenName.PRODUCT_DETAIL}
+                options={{ title: "Product details" }}
                 component={ScreenProductDetail} />
             <Stack.Screen
                 name={AppScreenName.PRODUCT_CREATE}
+                options={{ title: "Create new product" }}
                 component={ScreenProductCreate} />
         </Stack.Navigator>
     );

@@ -6,8 +6,9 @@ import { ICategory } from "../../redux/types/category";
 interface Props {
     data: ICategory[],
     selectedId: string | null,
+    disableCatTypeAll?: boolean, // default false
     loading?: boolean,
-    onReset: () => void,
+    onReset?: () => void,
     onItemPress: (category: ICategory) => void
 }
 
@@ -19,7 +20,8 @@ const DummyCategory = () => (
 const Categories = (props: Props) => {
 
     const onAllPress = () => {
-        props.onReset();
+        if(props.onReset)
+            props.onReset();
     }
 
     return (
@@ -34,13 +36,13 @@ const Categories = (props: Props) => {
                         [1, 2, 3, 4, 5].map(i => <DummyCategory key={`key-${i}`} />)
                         :
                         <>
-                            <CategoryItem
+                            {!props.disableCatTypeAll && <CategoryItem
                                 _id="ALL"
                                 name="ALL"
                                 createdAt=""
                                 updatedAt=""
                                 onItemPress={onAllPress}
-                                selected={props.selectedId === null} />
+                                selected={props.selectedId === null} />}
                             {props.data.map(cat => (
                                 <CategoryItem
                                     key={cat._id}

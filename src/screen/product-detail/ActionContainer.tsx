@@ -4,13 +4,14 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Subtitle from "../../component/Subtitle";
 
 interface Props {
-    //
+    onWishlistPress: () => void,
+    onCartPress: () => void,
 }
 
 const ActionContainer = (props: Props) => {
     return (
         <View style={styles.actionContainer}>
-            <TouchableNativeFeedback>
+            <TouchableNativeFeedback onPress={props.onWishlistPress}>
                 <View style={styles.actionItem}>
                     <Icon
                         style={{ marginRight: 8 }}
@@ -23,7 +24,7 @@ const ActionContainer = (props: Props) => {
                 </View>
             </TouchableNativeFeedback>
             <View style={styles.verticalLine} />
-            <TouchableNativeFeedback>
+            <TouchableNativeFeedback onPress={props.onCartPress}>
                 <View style={styles.actionItem}>
                     <Icon
                         style={{ marginRight: 8 }}
