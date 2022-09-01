@@ -6,9 +6,13 @@ export enum AppScreenName {
     PRODUCT_CREATE = "product-create",
 }
 
+export type ProductDetailScreenParams = {
+    id: string
+}
+
 export type AppScreenParams = {
     [AppScreenName.HOME]: undefined,
-    [AppScreenName.PRODUCT_DETAIL]: undefined,
+    [AppScreenName.PRODUCT_DETAIL]: ProductDetailScreenParams,
     [AppScreenName.PRODUCT_CREATE]: undefined,
 }
 
