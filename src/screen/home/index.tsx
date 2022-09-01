@@ -14,6 +14,7 @@ import ProductList from "./ProductList";
 const ScreenHome = () => {
     const navigation = useAppNavigation();
     const actionDispatcher = useAppDispatch();
+    const [selectedCategory, setSelectedCategory] = React.useState<ICategory | null>(null);
 
     const { product, category } = useAppSelector(state => ({
         product: {
@@ -25,6 +26,16 @@ const ScreenHome = () => {
             categories: state.category.categories,
         }
     }));
+
+    const productList = React.useMemo(() => {
+        if (selectedCategory)
+            return product.products.reduce<IProduct[]>((prev, curr) => {
+                if (curr.category === selectedCategory.name)
+                    prev.push(curr);
+                return prev;
+            }, []);
+        return product.products;
+    }, [product.products, selectedCategory]);
 
     React.useEffect(() => {
         actionDispatcher(productAction.fetchProductList());
@@ -38,7 +49,11 @@ const ScreenHome = () => {
     }, []);
 
     const onCategoryPress = React.useCallback((category: ICategory) => {
-        //
+        setSelectedCategory(category);
+    }, []);
+
+    const onCategoryReset = React.useCallback(() => {
+        setSelectedCategory(null);
     }, []);
 
     return (
@@ -47,11 +62,12 @@ const ScreenHome = () => {
             <Categories
                 loading={category.fetching}
                 data={category.categories}
-                selectedId={null}
+                selectedId={selectedCategory?._id ?? null}
+                onReset={onCategoryReset}
                 onItemPress={onCategoryPress} />
             <ProductList
                 loading={product.fetching}
-                data={product.products}
+                data={productList}
                 onItemPress={onProductPress} />
         </View>
     );

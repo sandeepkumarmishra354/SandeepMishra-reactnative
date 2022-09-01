@@ -18,6 +18,7 @@ const productReducer = createSlice({
         // while going back from full detail screen.
         setProductAsNull: (state) => {
             state.product = null;
+            state.fetchingDetail = false;
         }
     },
     extraReducers: builder => {

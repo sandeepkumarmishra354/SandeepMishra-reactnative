@@ -15,8 +15,11 @@ const CategoryItem = (props: Props) => {
 
     return (
         <TouchableNativeFeedback onPress={onPress}>
-            <View style={styles.item}>
-                <Subtitle>{props.name}</Subtitle>
+            <View
+                style={[styles.item, props.selected ? styles.selected : styles.unselected]}>
+                <Subtitle style={{ color: props.selected ? "#F5F5F5" : "#242B2E" }}>
+                    {props.name}
+                </Subtitle>
             </View>
         </TouchableNativeFeedback>
     );
@@ -30,10 +33,15 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         marginRight: 12,
         elevation: 1,
-        backgroundColor: "#F5F5F5",
         justifyContent: "center",
         alignItems: "center"
     },
+    selected: {
+        backgroundColor: "#242B2E",
+    },
+    unselected: {
+        backgroundColor: "#F5F5F5",
+    }
 });
 
 export default React.memo(CategoryItem);

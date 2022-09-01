@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 const ScreenProductCreate = () => {
+    
     return (
         <View style={styles.main}>
         </View>
